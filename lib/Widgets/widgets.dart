@@ -1,3 +1,5 @@
+import 'dart:ui';
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
@@ -110,6 +112,49 @@ class NavBar extends StatelessWidget {
           NavICons(icon: VIcons.system, function: active == 3 ? ()=> Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => Start() /* here */)): (){}, active: active == 3,),
         ],
       ),
+    );
+  }
+}
+
+class FrostedGlass extends StatelessWidget {
+  final double width;
+  final double height;
+  final double borderRadius;
+  final double blur;
+  final Widget child;
+  final String color;
+  final double colorOp;
+  const FrostedGlass({Key? key, required this.width, required this.height, required this.borderRadius, required this.blur, required this.child, required this.color, this.colorOp = 1}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return ClipRRect(
+      borderRadius: BorderRadius.circular(SizeConfig.widthMultiply * borderRadius),
+      child: Container(
+        height: SizeConfig.heightMultiply * height,
+        width: SizeConfig.widthMultiply * width,
+        child: Stack(
+          children: <Widget>[
+            BackdropFilter(
+              filter: ImageFilter.blur(
+                sigmaX: blur,
+                sigmaY: blur,
+              ),
+              child: Container(),
+            ),
+            Container(
+              height: SizeConfig.heightMultiply * height,
+              width: SizeConfig.widthMultiply * width,
+              decoration: BoxDecoration(
+                color: Color(int.parse(color)).withOpacity(colorOp),
+                borderRadius: BorderRadius.circular(SizeConfig.widthMultiply * borderRadius),
+                border: Border.all(color: Colors.white, width: 1)
+              ),
+              child: child,
+            )
+          ],
+        ),
+      )
     );
   }
 }
